@@ -1,0 +1,891 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0a0507">
+<title>Avanzamento New Life</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230a0507'/%3E%3Cpath d='M16 3.5 26.8 9.75v12.5L16 28.5 5.2 22.25V9.75z' fill='none' stroke='%23ff2e4d' stroke-width='1.6'/%3E%3Cpath d='M10.5 20.5v-9l6 9v-9M19.5 11.5v9h3' stroke='%23fff' stroke-width='2.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#0a0507; --bg2:#12080b; --pannello:rgba(24,11,15,.78); --bordo:rgba(255,70,95,.18); --riga:rgba(255,255,255,.06);
+  --txt:#f5eaec; --txt2:#c9b3b7; --muted:#8c767b;
+  --rosso:#ff2e4d; --rosso2:#ff6a3d; --rosa:#ff8a9c; --cremisi:#c3143a;
+  --ambra:#ffb547; --menta:#3ee0a1; --scaduta:#ff4d6a;
+  --grad:linear-gradient(95deg,#ff2e4d,#ff6a3d);
+  --f-tit:"Unbounded","Segoe UI",system-ui,sans-serif;
+  --f-txt:"Space Grotesk","Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --f-mono:"JetBrains Mono",Consolas,"Courier New",monospace;
+  --ombra:0 18px 50px rgba(0,0,0,.45);
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{font:14px/1.45 var(--f-txt);color:var(--txt);background:var(--bg);-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+::selection{background:rgba(255,46,77,.45);color:#fff}
+
+/* ═══════════════════════ ACCESSO ═══════════════════════ */
+#benvenuto{position:fixed;inset:0;overflow:hidden;z-index:10;background:radial-gradient(ellipse at 50% 42%,#1c080e 0,#0a0507 62%);transition:opacity .5s ease,transform .5s ease}
+#benvenuto.via{opacity:0;transform:scale(1.03);pointer-events:none}
+.aurora i{position:absolute;border-radius:50%;pointer-events:none}
+.aurora .o1{width:70vmax;height:70vmax;left:-28vmax;top:-34vmax;background:radial-gradient(circle,rgba(255,31,75,.34),transparent 62%);animation:deriva 16s ease-in-out infinite alternate}
+.aurora .o2{width:60vmax;height:60vmax;right:-26vmax;top:-8vmax;background:radial-gradient(circle,rgba(255,106,43,.2),transparent 62%);animation:deriva 20s -6s ease-in-out infinite alternate-reverse}
+.aurora .o3{width:80vmax;height:50vmax;left:10vw;bottom:-30vmax;background:radial-gradient(ellipse,rgba(160,0,50,.45),transparent 65%);animation:deriva 24s -3s ease-in-out infinite alternate}
+@keyframes deriva{to{transform:translate(6vmax,4vmax) scale(1.08)}}
+.griglia{position:absolute;left:-80%;right:-80%;bottom:0;height:88%;pointer-events:none;
+  background-image:linear-gradient(rgba(255,46,77,.38) 1px,transparent 1px),linear-gradient(90deg,rgba(255,46,77,.38) 1px,transparent 1px);
+  background-size:64px 64px;transform:perspective(900px) rotateX(54deg);transform-origin:50% 100%;
+  -webkit-mask-image:linear-gradient(to top,#000 5%,transparent 75%);mask-image:linear-gradient(to top,#000 5%,transparent 75%);
+  animation:avanza 2.6s linear infinite}
+@keyframes avanza{to{background-position:0 64px}}
+.stelle{position:absolute;inset:0;pointer-events:none;opacity:.55;
+  background-image:radial-gradient(1px 1px at 12% 18%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 78% 12%,#ffd0d7 50%,transparent 51%),
+    radial-gradient(1.5px 1.5px at 64% 30%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 30% 36%,#ffb3bf 50%,transparent 51%),
+    radial-gradient(1px 1px at 90% 40%,#fff 50%,transparent 51%),radial-gradient(1.5px 1.5px at 6% 52%,#ffd0d7 50%,transparent 51%),
+    radial-gradient(1px 1px at 46% 8%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 22% 6%,#fff 50%,transparent 51%);
+  animation:brillano 5s ease-in-out infinite alternate}
+@keyframes brillano{from{opacity:.25}to{opacity:.7}}
+.scansione{position:absolute;left:0;right:0;height:120px;top:-120px;pointer-events:none;background:linear-gradient(transparent,rgba(255,46,77,.06),transparent);animation:scansiona 7s linear infinite}
+@keyframes scansiona{to{transform:translateY(calc(100vh + 120px))}}
+
+.barra-top{position:absolute;top:0;left:0;right:0;z-index:3;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 28px;font-family:var(--f-mono);font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--txt2)}
+.barra-top b{color:#fff;font-weight:700}
+.sicuro{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--bordo);border-radius:999px;padding:6px 12px;background:rgba(0,0,0,.35)}
+.sicuro svg{width:13px;height:13px;color:var(--menta)}
+
+.centro{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:70px 18px 90px;overflow-y:auto}
+.emblema{width:min(170px,38vw);margin-bottom:6px;overflow:visible;animation:compare .9s both;transition:width .35s}
+.emblema .r1{transform-box:view-box;transform-origin:100px 100px;animation:gira 22s linear infinite}
+.emblema .r2{transform-box:view-box;transform-origin:100px 100px;animation:gira 14s linear infinite reverse}
+.emblema .esagono{filter:drop-shadow(0 0 14px rgba(255,46,77,.55))}
+.emblema .nucleo{animation:pulsa 3.2s ease-in-out infinite}
+@keyframes gira{to{transform:rotate(360deg)}}
+@keyframes pulsa{0%,100%{opacity:.55}50%{opacity:1}}
+#benvenuto:has(#f-acc:not([hidden])) .emblema{width:min(96px,26vw)}
+.etichetta{display:inline-flex;align-items:center;gap:10px;font-family:var(--f-mono);font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--rosa);animation:entra .6s .1s both}
+.etichetta::before,.etichetta::after{content:"";width:28px;height:1px;background:linear-gradient(90deg,transparent,var(--rosso))}
+.etichetta::after{transform:scaleX(-1)}
+#benvenuto h1{margin:14px 0 10px;line-height:1;animation:entra .7s .2s both}
+#benvenuto h1 small{display:block;font:500 clamp(13px,1.5vw,17px)/1 var(--f-txt);letter-spacing:.62em;text-transform:uppercase;color:#ffc2cc;margin-bottom:14px;padding-left:.62em}
+#benvenuto h1 span{display:block;font-family:var(--f-tit);font-weight:800;font-size:clamp(44px,10.5vw,124px);letter-spacing:-.01em;
+  background:linear-gradient(95deg,#ffffff 0%,#ffd6dc 28%,#ff2e4d 58%,#ff7a3d 82%,#ffffff 100%);background-size:220% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 34px rgba(255,46,77,.35));animation:scorre 9s ease-in-out infinite alternate}
+@keyframes scorre{to{background-position:100% 0}}
+.sotto{font-size:clamp(14px,1.4vw,17px);color:var(--txt2);margin:0 0 26px;max-width:520px;animation:entra .7s .3s both}
+@keyframes entra{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes compare{from{opacity:0;transform:scale(.8) rotate(-20deg)}to{opacity:1;transform:none}}
+
+#vai{position:relative;overflow:hidden;font-family:var(--f-tit);font-weight:700;font-size:14px;letter-spacing:2px;text-transform:uppercase;color:#fff;background:var(--grad);border:0;border-radius:14px;padding:18px 34px;cursor:pointer;display:inline-flex;align-items:center;gap:14px;
+  box-shadow:0 0 0 1px rgba(255,255,255,.14) inset,0 12px 40px rgba(255,46,77,.45),0 0 70px rgba(255,46,77,.18);transition:transform .15s,box-shadow .15s;animation:entra .7s .4s both}
+#vai::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.4) 50%,transparent 65%);transform:translateX(-120%);animation:luccica 3.4s 1.2s ease-in-out infinite}
+@keyframes luccica{0%{transform:translateX(-120%)}55%,100%{transform:translateX(120%)}}
+#vai:hover{transform:translateY(-2px);box-shadow:0 0 0 1px rgba(255,255,255,.2) inset,0 16px 48px rgba(255,46,77,.6),0 0 90px rgba(255,46,77,.25)}
+#vai:active{transform:translateY(1px)}
+#vai:disabled{opacity:.7;cursor:wait}
+#vai svg{width:18px;height:18px;transition:transform .2s}
+#vai:hover svg{transform:translateX(4px)}
+.stato-dati{margin-top:20px;display:inline-flex;align-items:center;gap:9px;font-family:var(--f-mono);font-size:11.5px;color:var(--txt2);letter-spacing:.5px;min-height:18px}
+.stato-dati i,.agg i{width:7px;height:7px;border-radius:50%;background:var(--menta);box-shadow:0 0 0 0 rgba(62,224,161,.6);animation:ping 2s infinite;flex:none}
+@keyframes ping{70%{box-shadow:0 0 0 7px rgba(62,224,161,0)}100%{box-shadow:0 0 0 0 rgba(62,224,161,0)}}
+
+/* chiave d'accesso */
+#f-acc{margin-top:22px;width:min(420px,92vw);background:rgba(18,8,11,.72);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid rgba(255,70,95,.3);border-radius:18px;padding:20px 20px 16px;box-shadow:var(--ombra),0 0 50px rgba(255,46,77,.12);text-align:left;position:relative;animation:entra .35s both}
+#f-acc::before{content:"";position:absolute;left:20px;right:20px;top:-1px;height:1px;background:linear-gradient(90deg,transparent,var(--rosso),transparent)}
+#f-acc label{display:block;font-family:var(--f-mono);font-size:10.5px;letter-spacing:2px;text-transform:uppercase;color:var(--rosa);margin-bottom:9px}
+#f-acc .riga{display:flex;gap:8px}
+#chiave{flex:1;min-width:0;padding:12px 13px;border:1px solid rgba(255,255,255,.14);border-radius:11px;font-size:15px;letter-spacing:1px;font-family:var(--f-mono);background:rgba(0,0,0,.45);color:#fff;caret-color:var(--rosso)}
+#chiave::placeholder{color:#7d6a6e;letter-spacing:.3px}
+#chiave:focus{outline:none;border-color:var(--rosso);box-shadow:0 0 0 3px rgba(255,46,77,.22),0 0 26px rgba(255,46,77,.2)}
+#entra{background:var(--grad);color:#fff;border:0;border-radius:11px;padding:0 20px;font-weight:700;letter-spacing:.5px;cursor:pointer}
+#entra:hover{filter:brightness(1.12)}
+#entra:disabled{opacity:.6;cursor:wait}
+.ricorda{display:flex!important;align-items:center;gap:9px;margin:12px 0 0!important;font-family:var(--f-txt)!important;font-size:13px!important;letter-spacing:0!important;text-transform:none!important;color:var(--txt2)!important}
+.ricorda input{accent-color:var(--rosso)}
+.err{color:var(--scaduta);font-size:13px;margin-top:9px;min-height:18px;font-weight:600}
+
+.nastro{position:absolute;left:0;right:0;bottom:0;z-index:3;overflow:hidden;border-top:1px solid var(--bordo);background:rgba(10,5,7,.7);padding:10px 0;font-family:var(--f-mono);font-size:11px;letter-spacing:3px;color:#9d868b;white-space:nowrap}
+.nastro div{display:inline-block;animation:nastro 38s linear infinite}
+.nastro b{color:var(--rosso);font-weight:400;margin:0 18px}
+@keyframes nastro{to{transform:translateX(-50%)}}
+
+/* ═══════════════════════ DASHBOARD ═══════════════════════ */
+#dash{min-height:100vh;animation:appare .5s both;background:
+  radial-gradient(900px 480px at 88% -8%,rgba(255,46,77,.17),transparent 62%),
+  radial-gradient(700px 420px at -8% 12%,rgba(255,106,61,.08),transparent 60%),
+  linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px) 0 0/44px 44px,
+  linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px) 0 0/44px 44px,
+  var(--bg)}
+@keyframes appare{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+header{position:sticky;top:0;z-index:30;background:rgba(10,5,7,.72);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--bordo)}
+header::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:linear-gradient(90deg,transparent 5%,var(--rosso) 50%,transparent 95%);opacity:.7}
+.hd{max-width:1500px;margin:0 auto;padding:13px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.logo{width:44px;height:44px;flex:none;filter:drop-shadow(0 0 10px rgba(255,46,77,.45))}
+.hd h2{margin:0;font-family:var(--f-tit);font-size:19px;font-weight:700;letter-spacing:.5px;line-height:1.1}
+.hd h2 b{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hd .sottot{font-family:var(--f-mono);font-size:10.5px;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.hd .dx{margin-left:auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.agg{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:11.5px;background:rgba(255,255,255,.04);border:1px solid var(--riga);color:var(--txt2);padding:7px 12px;border-radius:999px;white-space:nowrap}
+.agg.vecchio{border-color:rgba(255,77,106,.6);color:#fff;background:rgba(255,77,106,.15)}
+.agg.vecchio i{background:var(--scaduta);animation:none}
+.btn-h{background:transparent;border:1px solid rgba(255,255,255,.16);color:var(--txt);border-radius:10px;padding:7px 13px;cursor:pointer;font-size:12.5px;font-weight:600;display:inline-flex;align-items:center;gap:7px;transition:border-color .15s,background .15s}
+.btn-h:hover{border-color:var(--rosso);background:rgba(255,46,77,.12)}
+.btn-h svg{width:14px;height:14px}
+
+main{max-width:1500px;margin:0 auto;padding:22px 24px 36px}
+
+/* indicatori */
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-bottom:18px}
+.k{position:relative;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.015));border:1px solid var(--bordo);border-radius:16px;padding:16px 16px 15px;display:flex;gap:13px;align-items:flex-start;box-shadow:var(--ombra)}
+.k::before{content:"";position:absolute;left:14px;right:14px;top:0;height:1px;background:linear-gradient(90deg,transparent,var(--rosso),transparent)}
+.k::after{content:"";position:absolute;right:-40px;top:-40px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(255,46,77,.14),transparent 70%)}
+.k .ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none;background:rgba(255,46,77,.1);color:var(--rosa);border:1px solid rgba(255,46,77,.3);box-shadow:0 0 18px rgba(255,46,77,.18) inset}
+.k.g .ic{background:rgba(255,181,71,.08);color:var(--ambra);border-color:rgba(255,181,71,.3);box-shadow:0 0 18px rgba(255,181,71,.12) inset}
+.k.m .ic{background:rgba(62,224,161,.08);color:var(--menta);border-color:rgba(62,224,161,.3);box-shadow:0 0 18px rgba(62,224,161,.12) inset}
+.k .ic svg{width:20px;height:20px}
+.k .l{font-family:var(--f-mono);font-size:10px;text-transform:uppercase;letter-spacing:1.8px;color:var(--muted)}
+.k .v{font-family:var(--f-tit);font-size:27px;font-weight:700;line-height:1.15;color:#fff;margin-top:2px}
+.k .d{font-size:12px;color:var(--txt2)}
+.kbar{height:4px;border-radius:4px;background:rgba(255,255,255,.08);margin-top:8px;overflow:hidden;width:100%}
+.kbar i{display:block;height:100%;background:var(--grad);box-shadow:0 0 10px rgba(255,46,77,.7);border-radius:4px}
+.k > div:last-child{flex:1;min-width:0}
+
+/* filtri */
+.filtri{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px;background:var(--pannello);border:1px solid var(--bordo);border-radius:14px;padding:10px;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.cerca{flex:1 1 240px;max-width:380px;position:relative}
+.cerca input{width:100%;padding:9px 12px 9px 36px;border:1px solid rgba(255,255,255,.12);border-radius:10px;background:rgba(0,0,0,.4)}
+.cerca input::placeholder{color:#7d6a6e}
+.cerca input:focus,.filtri select:focus{outline:none;border-color:var(--rosso);box-shadow:0 0 0 3px rgba(255,46,77,.2)}
+.cerca svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:15px;height:15px;color:var(--rosa)}
+.seg{display:inline-flex;background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:3px;gap:2px}
+.seg button{border:0;background:transparent;padding:6px 12px;border-radius:7px;cursor:pointer;font-size:13px;color:var(--txt2);font-weight:600;white-space:nowrap}
+.seg button:hover{color:#fff}
+.seg button.on{background:var(--grad);color:#fff;box-shadow:0 0 16px rgba(255,46,77,.4)}
+.seg button .n{opacity:.7;font-family:var(--f-mono);font-size:11px;margin-left:5px}
+.filtri select{padding:8px 10px;border:1px solid rgba(255,255,255,.12);border-radius:10px;background:rgba(0,0,0,.4);max-width:230px}
+.filtri select option{background:#1a0c10;color:#fff}
+.conta{margin-left:auto;font-family:var(--f-mono);font-size:11.5px;color:var(--muted);padding-right:4px}
+.xls{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(62,224,161,.5);border-radius:10px;padding:8px 13px;background:rgba(62,224,161,.08);color:var(--menta);font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s,box-shadow .15s}
+.xls:hover{background:var(--menta);color:#04140d;box-shadow:0 0 20px rgba(62,224,161,.4)}
+.xls:disabled{opacity:.6;cursor:wait}
+.xls svg{width:16px;height:16px}
+
+/* tabella */
+.tw{background:var(--pannello);border:1px solid var(--bordo);border-radius:16px;overflow:auto;max-height:calc(100vh - 150px);box-shadow:var(--ombra)}
+.tw::-webkit-scrollbar{width:10px;height:10px}
+.tw::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:10px;border:2px solid transparent;background-clip:padding-box}
+.tw::-webkit-scrollbar-track{background:transparent}
+table{border-collapse:separate;border-spacing:0;width:100%;min-width:1080px}
+thead th{position:sticky;top:0;z-index:2;background:#170a0e;color:var(--txt2);font-family:var(--f-mono);font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:600;text-align:left;padding:13px 9px 12px;white-space:nowrap;cursor:pointer;user-select:none;border-bottom:1px solid rgba(255,46,77,.45)}
+thead th:first-child{padding-left:18px}
+thead th.r{text-align:right}
+thead th:hover{color:#fff;background:#200d12}
+thead th .fr{opacity:.4;margin-left:5px;font-size:9px}
+thead th.ord{color:#fff}
+thead th.ord .fr{opacity:1;color:var(--rosso)}
+thead th.qta.main{background:#260c13;color:var(--rosa)}
+tbody td{padding:10px 9px;border-bottom:1px solid var(--riga);vertical-align:middle}
+tbody td:first-child{padding-left:18px;box-shadow:inset 3px 0 0 var(--binario,transparent)}
+tbody tr.lav{--binario:var(--rosso)}
+tbody tr.attesa{--binario:var(--ambra)}
+tbody tr.fuori{--binario:#6f5a5f}
+tbody tr:nth-child(even) td{background:rgba(255,255,255,.014)}
+tbody tr:hover td{background:rgba(255,46,77,.07)}
+td.r{text-align:right}
+.com{font-family:var(--f-mono);font-weight:700;color:#fff;font-size:12.5px;white-space:nowrap;letter-spacing:.3px}
+.brand{display:inline-block;font-family:var(--f-mono);font-size:9px;font-weight:700;letter-spacing:1px;padding:1px 6px;border-radius:4px;margin-left:7px;vertical-align:1px}
+.brand.gu{color:var(--menta);border:1px solid rgba(62,224,161,.45);background:rgba(62,224,161,.07)}
+.brand.ysl{color:#fff;border:1px solid rgba(255,255,255,.5);background:rgba(255,255,255,.06)}
+.art{font-size:12px;color:var(--muted);margin-top:3px;max-width:205px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.scad{white-space:nowrap;font-family:var(--f-mono);font-size:12.5px}
+.scad.pass{color:var(--scaduta);font-weight:700}
+.scad.vic{color:var(--ambra);font-weight:700}
+.scad small{display:block;font-family:var(--f-txt);font-size:11px;font-weight:400;color:var(--muted)}
+.nul{color:#4d3c40}
+.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(255,46,77,.55);color:var(--rosa);background:rgba(255,46,77,.08);border-radius:8px;padding:4px 10px;font-weight:600;font-size:12.5px;cursor:pointer;white-space:nowrap;transition:all .15s}
+.pill:hover,.pill.on{background:var(--rosso);border-color:var(--rosso);color:#fff;box-shadow:0 0 18px rgba(255,46,77,.5)}
+.pill svg{width:12px;height:12px}
+.fasi{display:flex;flex-wrap:wrap;gap:4px;cursor:pointer;min-width:150px;max-width:230px}
+.fase{font-family:var(--f-mono);font-size:10.5px;font-weight:600;padding:2px 7px;border-radius:5px;white-space:nowrap;border:1px solid transparent}
+.fase.x{background:rgba(255,46,77,.13);color:var(--rosa);border-color:rgba(255,46,77,.42)}
+.fase.t{background:rgba(255,138,76,.11);color:#ffb08a;border-color:rgba(255,138,76,.38)}
+.fase.p{background:rgba(255,122,182,.11);color:#ffa3cf;border-color:rgba(255,122,182,.38)}
+.fase.a{background:rgba(255,255,255,.05);color:var(--txt2);border-color:rgba(255,255,255,.14)}
+.fase.g{background:transparent;color:var(--rosa);border:1px dashed rgba(255,46,77,.6)}
+.inatt{font-size:12px;font-weight:600;color:#ffcf7a;background:rgba(255,181,71,.07);border:1px dashed rgba(255,181,71,.5);padding:3px 10px;border-radius:7px;white-space:nowrap}
+.ass{font-size:11.5px;color:var(--muted);margin-top:5px;white-space:nowrap}
+.ass b{color:#fff;font-weight:600}
+.monte{display:flex;flex-direction:column;gap:4px;align-items:flex-start}
+.mt{display:inline-flex;align-items:center;gap:7px;font-weight:600;color:var(--txt);white-space:nowrap;font-size:13px;cursor:pointer;border-radius:6px;padding:1px 5px;margin-left:-5px;transition:background .15s}
+.mt:hover,.mt.on{background:rgba(255,46,77,.14)}
+.mt::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--rosso2);box-shadow:0 0 8px var(--rosso2);flex:none}
+.mt i{font-style:normal;font-weight:400;color:var(--muted);font-size:12px}
+.mt.ok{color:var(--menta);cursor:default}
+.mt.ok::before{background:var(--menta);box-shadow:0 0 8px var(--menta)}
+.mt.no{color:var(--muted);font-weight:400;font-style:italic;cursor:default}
+.mt.ok:hover,.mt.no:hover{background:none}
+.mt.no::before{background:#5d4a4f;box-shadow:none}
+td.q{font-family:var(--f-mono);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap;font-size:13px;color:var(--txt2)}
+td.q.ap{font-weight:700;color:#ff5a73;font-size:14px;background:rgba(255,46,77,.055)!important;text-shadow:0 0 14px rgba(255,46,77,.45)}
+tbody tr:hover td.q.ap{background:rgba(255,46,77,.13)!important}
+td.q.rim{font-weight:700;color:#fff}
+td.q .z{color:#4d3c40;font-weight:400;text-shadow:none}
+.prog{display:block;margin:6px 0 0 auto;width:64px;height:3px;border-radius:3px;background:rgba(255,255,255,.08);overflow:hidden}
+.prog i{display:block;height:100%;border-radius:3px;background:var(--grad);box-shadow:0 0 8px rgba(255,46,77,.8)}
+tfoot td{position:sticky;bottom:0;background:#170a0e;color:#fff;font-weight:700;padding:12px 10px;font-family:var(--f-mono);font-size:12.5px;font-variant-numeric:tabular-nums;border-top:1px solid rgba(255,46,77,.45)}
+tfoot td:first-child{padding-left:18px}
+tfoot td.r{text-align:right}
+tfoot td.ap{color:#ff5a73}
+.vuoto{padding:40px;text-align:center;color:var(--muted)}
+
+details.fc{margin-top:22px;background:var(--pannello);border:1px solid var(--bordo);border-radius:16px;box-shadow:var(--ombra)}
+details.fc summary{padding:14px 18px;cursor:pointer;font-weight:600;color:var(--txt);list-style:none;display:flex;align-items:center;gap:10px}
+details.fc summary::-webkit-details-marker{display:none}
+details.fc summary::before{content:"▸";color:var(--rosso);transition:transform .15s}
+details.fc[open] summary::before{transform:rotate(90deg)}
+details.fc summary small{font-family:var(--f-mono);font-weight:400;font-size:11.5px;color:var(--muted)}
+details.fc .tw{border:0;border-top:1px solid var(--bordo);border-radius:0 0 16px 16px;max-height:none;box-shadow:none;background:transparent}
+
+/* finestrella a comparsa */
+#pop{position:fixed;z-index:50;background:rgba(20,9,13,.97);border:1px solid rgba(255,70,95,.35);border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 40px rgba(255,46,77,.14);max-width:min(560px,94vw);max-height:min(430px,70vh);overflow:auto;display:none;font-size:13px}
+#pop.on{display:block;animation:entra .18s both}
+#pop .ph{position:sticky;top:0;background:linear-gradient(90deg,#3a0c17,#1b0b10);color:#fff;padding:10px 13px;font-weight:600;display:flex;gap:10px;align-items:baseline;justify-content:space-between;border-bottom:1px solid rgba(255,46,77,.45)}
+#pop .ph small{font-family:var(--f-mono);font-weight:400;color:var(--rosa);font-size:11px}
+#pop .ph button{background:none;border:0;color:#fff;font-size:18px;line-height:1;cursor:pointer;padding:0 2px;opacity:.7}
+#pop .ph button:hover{opacity:1}
+#pop table{min-width:0;width:100%}
+#pop th{position:static;background:rgba(255,255,255,.03);color:var(--muted);font-size:9.5px;padding:8px 11px;cursor:default;border-bottom:1px solid var(--riga)}
+#pop th:hover{background:rgba(255,255,255,.03);color:var(--muted)}
+#pop td{padding:8px 11px;border-bottom:1px solid var(--riga);vertical-align:top;background:transparent!important;box-shadow:none}
+#pop tr:last-child td{border-bottom:0}
+#pop .nb{font-family:var(--f-mono);font-weight:700;color:#fff}
+#pop .nota{padding:9px 13px;background:rgba(255,181,71,.06);color:#ffcf7a;font-size:12px;border-top:1px solid var(--riga)}
+
+footer{max-width:1500px;margin:0 auto;padding:0 24px 30px;color:var(--muted);font-size:11.5px;display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between}
+#fonti{font-family:var(--f-mono);font-size:11px}
+
+@media (max-width:760px){
+  .barra-top{padding:14px 16px;letter-spacing:1.5px}
+  .barra-top .sicuro span{display:none}
+  #vai{font-size:12.5px;letter-spacing:1.2px;padding:16px 22px;white-space:nowrap}
+  .hd{padding:12px 14px}
+  .hd .dx{margin-left:0;width:100%}
+  main{padding:14px 12px 30px}
+  .conta{margin-left:0;width:100%}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media print{
+  :root{color-scheme:light}
+  #benvenuto,.filtri,.btn-h,#pop,.kbar,.prog{display:none!important}
+  *{color:#000!important;background:transparent!important;box-shadow:none!important;text-shadow:none!important;filter:none!important}
+  header{position:static}
+  .tw{max-height:none;overflow:visible;border:0}
+  thead th,tbody td,tfoot td{border-color:#bbb!important}
+}
+</style>
+</head>
+<body>
+
+<!-- Forme e sfumature riusate -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="g-rosso" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff2e4d"/><stop offset="1" stop-color="#ff7a3d"/>
+    </linearGradient>
+    <linearGradient id="g-lettere" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#ffc2cc"/>
+    </linearGradient>
+    <radialGradient id="g-nucleo">
+      <stop offset="0" stop-color="#ff2e4d" stop-opacity=".55"/><stop offset="1" stop-color="#ff2e4d" stop-opacity="0"/>
+    </radialGradient>
+    <symbol id="s-marchio" viewBox="0 0 200 200">
+      <path d="M100 30 160.6 65v70L100 170 39.4 135V65z" fill="#12070a" stroke="url(#g-rosso)" stroke-width="5"/>
+      <path d="M100 44 148.5 72v56L100 156 51.5 128V72z" fill="none" stroke="rgba(255,46,77,.28)" stroke-width="1.5"/>
+      <path d="M72 122V78l26 44V78M110 78v44h20" fill="none" stroke="url(#g-lettere)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- ═══════════════════════ ACCESSO ═══════════════════════ -->
+<section id="benvenuto">
+  <div class="aurora"><i class="o1"></i><i class="o2"></i><i class="o3"></i></div>
+  <div class="stelle"></div>
+  <div class="griglia"></div>
+  <div class="scansione"></div>
+
+  <div class="barra-top">
+    <span><b>Firenze Moda</b> · portale sub-fornitori</span>
+    <span class="sicuro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>Dati cifrati AES-256</span></span>
+  </div>
+
+  <div class="centro">
+    <svg class="emblema" viewBox="0 0 200 200" aria-hidden="true">
+      <circle class="nucleo" cx="100" cy="100" r="92" fill="url(#g-nucleo)"/>
+      <g class="r1">
+        <circle cx="100" cy="100" r="94" fill="none" stroke="rgba(255,46,77,.35)" stroke-width="1" stroke-dasharray="2 7"/>
+        <circle cx="100" cy="6" r="3.5" fill="#ff2e4d"/>
+        <circle cx="100" cy="194" r="2" fill="#ff7a3d"/>
+      </g>
+      <g class="r2">
+        <circle cx="100" cy="100" r="82" fill="none" stroke="url(#g-rosso)" stroke-width="2" stroke-dasharray="70 40 12 40" stroke-linecap="round"/>
+      </g>
+      <use class="esagono" href="#s-marchio" x="20" y="20" width="160" height="160"/>
+    </svg>
+
+    <span class="etichetta">Avanzamento produzione</span>
+    <h1><small>Benvenuti</small><span>NEW LIFE</span></h1>
+    <p class="sotto">Commesse in lavorazione e in arrivo, bolle aperte e lavorazioni a monte, sempre aggiornate.</p>
+
+    <button id="vai" type="button">Accedi alla dashboard
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </button>
+
+    <form id="f-acc" autocomplete="off" hidden>
+      <label for="chiave">Chiave d'accesso</label>
+      <div class="riga">
+        <input id="chiave" type="text" placeholder="Scrivi la chiave d'accesso" spellcheck="false" autocapitalize="characters" autocomplete="off">
+        <button id="entra" type="submit">Entra</button>
+      </div>
+      <label class="ricorda"><input type="checkbox" id="ricorda" checked> Ricorda la chiave su questo computer</label>
+      <div class="err" id="err" role="alert"></div>
+    </form>
+    <div class="stato-dati"><i></i><span id="agg-b"></span></div>
+  </div>
+
+  <div class="nastro" aria-hidden="true"><div>
+    NEW LIFE<b>◆</b>AVANZAMENTO PRODUZIONE<b>◆</b>ASSEMBLAGGIO<b>◆</b>COMMESSE IN ARRIVO<b>◆</b>LAVORAZIONI A MONTE<b>◆</b>FIRENZE MODA SRL<b>◆</b>DATI CIFRATI AES-256<b>◆</b>
+    NEW LIFE<b>◆</b>AVANZAMENTO PRODUZIONE<b>◆</b>ASSEMBLAGGIO<b>◆</b>COMMESSE IN ARRIVO<b>◆</b>LAVORAZIONI A MONTE<b>◆</b>FIRENZE MODA SRL<b>◆</b>DATI CIFRATI AES-256<b>◆</b>
+  </div></div>
+</section>
+
+<!-- ═══════════════════════ DASHBOARD ═══════════════════════ -->
+<div id="dash" hidden>
+  <header>
+    <div class="hd">
+      <svg class="logo" aria-hidden="true"><use href="#s-marchio"/></svg>
+      <div>
+        <h2>Avanzamento <b>New Life</b></h2>
+        <div class="sottot">Firenze Moda · assemblaggio · commesse aperte e in arrivo</div>
+      </div>
+      <div class="dx">
+        <span class="agg"><i></i><span id="agg"></span></span>
+        <button class="btn-h" id="home" title="Torna alla pagina di accesso">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7M5 10v10h14V10"/></svg>Home</button>
+        <button class="btn-h" id="esci" title="Dimentica la chiave su questo computer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"/></svg>Esci</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="kpi" id="kpi"></div>
+
+    <div class="filtri">
+      <div class="cerca">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="q" type="search" placeholder="Cerca commessa, modello, descrizione, bolla…">
+      </div>
+      <div class="seg" id="stato">
+        <button data-v="tutte" class="on">Tutte<span class="n" id="n-tutte"></span></button>
+        <button data-v="lav">In lavorazione<span class="n" id="n-lav"></span></button>
+        <button data-v="attesa">In attesa<span class="n" id="n-attesa"></span></button>
+      </div>
+      <select id="monte" title="Lavorazioni a monte"><option value="">Tutte le lavorazioni a monte</option></select>
+      <select id="brand" title="Brand"><option value="">Tutti i brand</option></select>
+      <span class="conta" id="conta"></span>
+      <button class="xls" id="xls" type="button" title="Scarica in Excel le commesse visibili con i filtri attuali">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M9 13l4 5M13 13l-4 5"/></svg>
+        <span>Esporta Excel</span>
+      </button>
+    </div>
+
+    <div class="tw"><table id="tab"></table></div>
+
+    <details class="fc" id="box-fc" hidden>
+      <summary>Aperte a New Life ma non presenti nel Carico <small id="fc-n"></small></summary>
+      <div class="tw"><table id="tab-fc"></table></div>
+    </details>
+  </main>
+
+  <footer>
+    <span>Quantità: per ogni bolla il valore massimo fra le fasi aperte a New Life, sommato per commessa · Lanciata e Rimaste come nella riga New Life del Carico di Lavoro · la barra sotto Rimaste è la quota già chiusa.</span>
+    <span id="fonti"></span>
+  </footer>
+</div>
+
+<div id="pop" role="dialog"></div>
+
+<script>
+"use strict";
+/* ───────────────────────── Decifratura ─────────────────────────
+   dati.js contiene i dati compressi e cifrati (AES-256-CTR + HMAC-SHA256,
+   chiavi derivate dalla chiave d'accesso con PBKDF2-SHA256). Senza la chiave
+   giusta il controllo HMAC fallisce e non si vede nulla. */
+const enc = new TextEncoder();
+const b64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+const cat = (...a) => { const o = new Uint8Array(a.reduce((n, x) => n + x.length, 0)); let i = 0; for (const x of a) { o.set(x, i); i += x.length; } return o; };
+
+async function decifra(pk, chiave) {
+  const salt = b64(pk.salt), iv = b64(pk.iv), ct = b64(pk.ct), mac = b64(pk.mac);
+  const base = await crypto.subtle.importKey("raw", enc.encode(chiave), "PBKDF2", false, ["deriveBits"]);
+  const bits = new Uint8Array(await crypto.subtle.deriveBits({ name: "PBKDF2", hash: "SHA-256", salt, iterations: pk.iter }, base, 512));
+  const kMac = await crypto.subtle.importKey("raw", bits.slice(32), { name: "HMAC", hash: "SHA-256" }, false, ["verify"]);
+  const ok = await crypto.subtle.verify("HMAC", kMac, mac, cat(enc.encode("NL1"), salt, iv, ct));
+  if (!ok) throw new Error("chiave");
+  const kAes = await crypto.subtle.importKey("raw", bits.slice(0, 32), "AES-CTR", false, ["decrypt"]);
+  const z = await crypto.subtle.decrypt({ name: "AES-CTR", counter: iv, length: 64 }, kAes, ct);
+  const txt = await new Response(new Blob([z]).stream().pipeThrough(new DecompressionStream("deflate"))).text();
+  return JSON.parse(txt);
+}
+
+/* dati.js si ricarica con un parametro sempre nuovo, così non resta in cache */
+function caricaPacchetto() {
+  return new Promise((ok, ko) => {
+    const s = document.createElement("script");
+    s.src = "dati.js?t=" + Date.now();
+    s.onload = () => { s.remove(); window.NL_DATI ? ok(window.NL_DATI) : ko(new Error("vuoto")); };
+    s.onerror = () => { s.remove(); ko(new Error("rete")); };
+    document.head.appendChild(s);
+  });
+}
+
+/* La pagina di Zeta Due sta sullo stesso dominio: nome diverso per la chiave ricordata */
+const MEM = "nl_chiave";
+const leggiMem = () => { try { return localStorage.getItem(MEM) || ""; } catch { return ""; } };
+const scriviMem = v => { try { v ? localStorage.setItem(MEM, v) : localStorage.removeItem(MEM); } catch {} };
+/* Forma canonica della chiave: IDENTICA a normalizza_chiave() nello script Python.
+   Chiavi generate (4 gruppi da 5): tollera spazi, trattini, testo intorno; I e 1 → L.
+   Chiavi libere (es. un nome): maiuscole/minuscole, spazi e punteggiatura indifferenti. */
+const pulisci = s => {
+  const t = s.toUpperCase().replace(/[I1]/g, "L");
+  const m = t.match(/[A-Z0-9]{5}[\s\-–—_.]*[A-Z0-9]{5}[\s\-–—_.]*[A-Z0-9]{5}[\s\-–—_.]*[A-Z0-9]{5}/);
+  const a = (m ? m[0] : t).replace(/[^A-Z0-9]/g, "");
+  return a.length === 20 ? a.match(/.{5}/g).join("-") : s.toUpperCase().replace(/[^A-Z0-9]/g, "");
+};
+
+let CHIAVE = "", MAC = "", D = null, PK = null, PRONTO = null;
+const $ = id => document.getElementById(id);
+
+/* ───────────────────────── Flusso: benvenuto → chiave → dashboard ───────────────────────── */
+async function avvio() {
+  try { PK = await caricaPacchetto(); }
+  catch { $("agg-b").textContent = "Dati non raggiungibili: controllate la connessione e ricaricate la pagina."; return; }
+  $("agg-b").textContent = PK.agg ? "Dati aggiornati il " + dtIt(PK.agg).replace(" ", " alle ") : "";
+  const mem = leggiMem();
+  if (mem) PRONTO = entra(PK, mem, true).catch(() => { scriviMem(""); PRONTO = null; });
+}
+
+$("vai").onclick = async () => {
+  if (!PK) return;
+  if (PRONTO) { $("vai").disabled = true; await PRONTO; $("vai").disabled = false; }
+  if (D) { mostraDash(); return; }
+  $("f-acc").hidden = false;
+  setTimeout(() => $("chiave").focus(), 50);
+};
+
+$("chiave").onkeydown = ev => { if (ev.key === "Enter") { ev.preventDefault(); $("f-acc").requestSubmit(); } };
+$("f-acc").onsubmit = async ev => {
+  ev.preventDefault();
+  const k = pulisci($("chiave").value);
+  if (!k || !PK) return;
+  const btn = $("entra");
+  btn.disabled = true; btn.textContent = "…"; $("err").textContent = "";
+  try { await entra(PK, k, $("ricorda").checked); mostraDash(); }
+  catch (e) {
+    $("err").innerHTML = e.message !== "chiave" ? "Errore nell'apertura dei dati."
+      : `Chiave non valida.<br><span style="font-weight:600;color:var(--ink2)">Controllate di averla scritta giusta, `
+        + `oppure copiate e incollate la chiave dalla mail.</span>`;
+  }
+  btn.disabled = false; btn.textContent = "Entra";
+};
+
+async function entra(pk, k, ricorda) {
+  D = await decifra(pk, k);
+  CHIAVE = k; MAC = pk.mac;
+  if (ricorda) scriviMem(k);
+  prepara();
+  disegna();
+}
+
+function mostraDash() {
+  const b = $("benvenuto");
+  b.classList.add("via");
+  setTimeout(() => { b.hidden = true; }, 420);
+  $("dash").hidden = false;
+  scrollTo(0, 0);
+}
+$("home").onclick = () => {
+  chiudiPop();
+  const b = $("benvenuto");
+  b.hidden = false;
+  requestAnimationFrame(() => b.classList.remove("via"));
+  $("f-acc").hidden = true;
+};
+$("esci").onclick = () => { scriviMem(""); location.reload(); };
+
+/* Controllo periodico: se i dati sono stati aggiornati, si ridisegna da solo */
+setInterval(async () => {
+  if (!CHIAVE) return;
+  try {
+    const pk = await caricaPacchetto();
+    PK = pk;
+    if (pk.mac !== MAC) { D = await decifra(pk, CHIAVE); MAC = pk.mac; prepara(); disegna(); }
+    else aggiornaEtichetta();
+    $("agg-b").textContent = "Dati aggiornati il " + dtIt(pk.agg).replace(" ", " alle ");
+  } catch {}
+}, 10 * 60 * 1000);
+
+/* ───────────────────────── Utilità ───────────────────────── */
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const fmt = n => (n || 0).toLocaleString("it-IT");
+const oggi = () => { const d = new Date(); d.setHours(0, 0, 0, 0); return d; };
+const gg = iso => iso ? Math.round((new Date(iso + "T00:00:00") - oggi()) / 864e5) : null;
+const dataIt = iso => iso ? iso.slice(8, 10) + "/" + iso.slice(5, 7) + "/" + iso.slice(2, 4) : "—";
+const dtIt = iso => iso ? `${iso.slice(8, 10)}/${iso.slice(5, 7)}/${iso.slice(0, 4)} ${iso.slice(11, 16)}` : "—";
+
+/* Etichette delle fasi GEA: [nome, tipo, sigla]
+   tipo x = assemblaggio, t = taglio, p = preparazione, g = assegnazione, a = altro */
+const FASI = {
+  4: ["Pre-assemblaggio", "x", "Pre-ass."], 5: ["Assemblaggio", "x", "Assembl."],
+  25: ["Assegnazione assemblaggio", "g", "Assegnaz."],
+  1: ["Taglio pelle", "t", "T. pelle"], 2: ["Taglio seta", "t", "T. seta"], 10: ["Taglio coperte", "t", "T. coperte"],
+  11: ["Taglio infustiture", "t", "T. infust."], 3: ["Preparazione", "p", "Prep."], 12: ["Prep. pelle/tessuti", "p", "Prep. P/T"],
+  13: ["Tiralampo", "a", "Tiralampo"], 14: ["Tracolla", "a", "Tracolla"], 15: ["Manigliotto", "a", "Manigliotto"],
+  16: ["Costola", "a", "Costola"], 17: ["Rifilatura", "a", "Rifilatura"], 18: ["Montaggio accessori", "a", "Mont. acc."],
+  21: ["Lavorazione bachino", "a", "Bachino"], 7: ["Controllo qualità", "a", "Contr. qual."],
+  8: ["Confezionamento", "a", "Confez."], 27: ["Preconfezionamento", "a", "Preconf."],
+};
+const fase = f => {
+  const d = (f.d || "").replace(/^\*+/, "");
+  const n = d ? d.charAt(0) + d.slice(1).toLowerCase() : "Fase " + f.n;
+  return FASI[f.n] || [n, "a", n.length > 12 ? n.slice(0, 11) + "." : n];
+};
+const brandTag = b => /saint|ysl/i.test(b || "") ? '<span class="brand ysl">YSL</span>' : /gucci/i.test(b || "") ? '<span class="brand gu">GUCCI</span>' : "";
+const artTxt = c => [c.mod, c.parte].filter(Boolean).join(" ") + (c.descr ? " · " + c.descr : "");
+const eNL = s => /^\s*n(ew)?\W*life\s*$/i.test(s || "");
+/* Assemblaggio dal Carico: chi assembla oltre (o al posto di) New Life */
+const altriAss = c => c.dest.filter(d => !eNL(d.sub));
+const MONTE_OK = "Completate", MONTE_NO = "Bolle non ancora emesse";
+/* Lavorazioni a monte raggruppate per lavorante: [{e, tipi, righe}] */
+function monteGruppi(c) {
+  const g = new Map();
+  for (const m of c.monte) {
+    if (!g.has(m.e)) g.set(m.e, { e: m.e, righe: [] });
+    g.get(m.e).righe.push(m);
+  }
+  return [...g.values()].map(x => {
+    const tipi = [...new Set(x.righe.map(m => { const [, t, s] = fase(m); return t === "t" ? "taglio" : t === "p" ? "prep." : s; }))];
+    return { ...x, tipi };
+  });
+}
+const monteNomi = c => c.monte.length ? [...new Set(c.monte.map(m => m.e))]
+  : [c.monte_st === "fatto" ? MONTE_OK : MONTE_NO];
+const monteTesto = c => c.monte.length
+  ? monteGruppi(c).map(g => `${g.e}: ` + g.righe.map(m => `${fase(m)[0]} ${m.pz} pz`).join(", ")).join(" / ")
+  : monteNomi(c)[0];
+
+/* ───────────────────────── Stato vista ───────────────────────── */
+const V = { q: "", stato: "tutte", monte: "", brand: "", ord: "scad", dir: 1 };
+let RIGHE = [], FUORI = [];
+
+function prepara() {
+  RIGHE = D.commesse.filter(c => c.stato !== "fuori");
+  FUORI = D.commesse.filter(c => c.stato === "fuori");
+  const coda = [MONTE_OK, MONTE_NO];
+  const nomi = [...new Set(RIGHE.flatMap(monteNomi))]
+    .sort((a, b) => (coda.indexOf(a) - coda.indexOf(b)) || a.localeCompare(b));
+  $("monte").innerHTML = '<option value="">Tutte le lavorazioni a monte</option>' + nomi.map(d => `<option${d === V.monte ? " selected" : ""}>${esc(d)}</option>`).join("");
+  const brands = [...new Set(D.commesse.map(c => c.brand).filter(Boolean))].sort();
+  $("brand").innerHTML = '<option value="">Tutti i brand</option>' + brands.map(b => `<option${b === V.brand ? " selected" : ""}>${esc(b)}</option>`).join("");
+  aggiornaEtichetta();
+  const f = D.fonti || {};
+  $("fonti").textContent = `Fonti: Carico di Lavoro del ${dtIt(f.carico)} · bolle aperte GEA del ${dtIt(f.aperte)}`;
+}
+
+function aggiornaEtichetta() {
+  if (!D) return;
+  const el = $("agg"), ore = (Date.now() - new Date(D.agg)) / 36e5;
+  el.textContent = "Aggiornato il " + dtIt(D.agg);
+  el.parentElement.classList.toggle("vecchio", ore > 30);
+  el.parentElement.title = ore > 30 ? "I dati non vengono aggiornati da più di un giorno" : "";
+}
+
+function filtra(lista, conStato) {
+  const q = V.q.trim().toLowerCase();
+  return lista.filter(c => {
+    if (conStato && V.stato !== "tutte" && c.stato !== V.stato) return false;
+    if (V.monte && !monteNomi(c).includes(V.monte)) return false;
+    if (V.brand && c.brand !== V.brand) return false;
+    if (q) {
+      const t = [c.c, c.mod, c.parte, c.descr, ...monteNomi(c), ...c.dest.map(d => d.sub), ...c.bolle.map(b => b.b)].join(" ").toLowerCase();
+      if (!t.includes(q)) return false;
+    }
+    return true;
+  });
+}
+
+const CHIAVI_ORD = {
+  c: c => c.c, scad: c => c.scad || "9999", bolle: c => c.bolle.length, fasi: c => c.fasi.length,
+  monte: c => monteNomi(c).join("/"), lanc: c => c.lanc, ap: c => c.ap, ch: c => c.ch, rim: c => c.rim,
+};
+function ordina(l) {
+  const k = CHIAVI_ORD[V.ord];
+  return l.slice().sort((a, b) => { const x = k(a), y = k(b); return (x < y ? -1 : x > y ? 1 : a.c.localeCompare(b.c)) * V.dir; });
+}
+
+/* ───────────────────────── Disegno ───────────────────────── */
+const COLS = [
+  ["c", "Commessa"], ["scad", "Scadenza"], ["bolle", "Bollette aperte"], ["fasi", "Fasi da fare"],
+  ["monte", "Lavorazioni a monte"], ["lanc", "Lanciata", "r qta"], ["ap", "Aperte", "r qta main"], ["ch", "Chiuse", "r qta"], ["rim", "Rimaste", "r qta"],
+];
+function testata(conOrd) {
+  return "<thead><tr>" + COLS.map(([k, t, cl = ""]) =>
+    `<th class="${cl}${conOrd && V.ord === k ? " ord" : ""}" data-ord="${k}">${t}<span class="fr">${conOrd && V.ord === k ? (V.dir > 0 ? "▲" : "▼") : "↕"}</span></th>`).join("") + "</tr></thead>";
+}
+
+function cellaMonte(c) {
+  if (!c.monte.length)
+    return c.monte_st === "fatto"
+      ? `<span class="mt ok" title="Nessuna lavorazione a monte aperta: taglio e accessori risultano chiusi">${MONTE_OK}</span>`
+      : `<span class="mt no" title="In GEA non c'è ancora nessuna bolla per questa commessa">${MONTE_NO}</span>`;
+  return `<div class="monte">${monteGruppi(c).map(g =>
+    `<span class="mt" data-pop="monte">${esc(g.e)} <i>${esc(g.tipi.join(", "))}</i></span>`).join("")}</div>`;
+}
+
+function notaAss(c) {
+  if (c.stato === "fuori" || !c.dest.length) return "";
+  const altri = altriAss(c);
+  if (!altri.length) return "";
+  const nomi = altri.map(d => esc(d.sub || "da assegnare")).join(", ");
+  return altri.length === c.dest.length
+    ? `<div class="ass">Assembla <b>${nomi}</b></div>`
+    : `<div class="ass">Divisa con <b>${altri.map(d => `${esc(d.sub || "da assegnare")} (${fmt(d.q)} pz)`).join(", ")}</b></div>`;
+}
+
+function riga(c) {
+  const g = gg(c.scad);
+  const clS = g === null ? "" : g < 0 ? "pass" : g <= 7 ? "vic" : "";
+  const nota = g === null ? "" : g < 0 ? `scaduta da ${-g} gg` : g === 0 ? "oggi" : `fra ${g} gg`;
+  const bolle = c.bolle.length
+    ? `<span class="pill" data-pop="bolle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><path d="M4 6h16M4 12h16M4 18h10"/></svg>${c.bolle.length} ${c.bolle.length === 1 ? "bolla" : "bolle"}</span>`
+    : '<span class="nul">—</span>';
+  const fasi = c.stato === "attesa"
+    ? '<span class="inatt">In attesa di assegnazione</span>'
+    : `<div class="fasi" data-pop="fasi">${c.fasi.map(f => { const [, t, s] = fase(f); return `<span class="fase ${t}">${esc(s)}</span>`; }).join("")}</div>`;
+  const q = (v, cl = "", extra = "") => `<td class="q ${cl}">${v ? fmt(v) : '<span class="z">0</span>'}${extra}</td>`;
+  const pct = c.lanc ? Math.min(100, Math.round(c.ch / c.lanc * 100)) : 0;
+  const barra = `<span class="prog" title="Chiusi ${fmt(c.ch)} su ${fmt(c.lanc)} (${pct}%)"><i style="width:${pct}%"></i></span>`;
+  return `<tr class="${c.stato}" data-c="${esc(c.c)}">
+    <td><div class="com">${esc(c.c)}${brandTag(c.brand)}</div><div class="art" title="${esc(artTxt(c))}">${esc(artTxt(c)) || "&nbsp;"}</div></td>
+    <td class="scad ${clS}">${dataIt(c.scad)}${nota ? `<small>${nota}</small>` : ""}</td>
+    <td>${bolle}</td><td>${fasi}${notaAss(c)}</td><td>${cellaMonte(c)}</td>
+    ${q(c.lanc)}${q(c.ap, "ap")}${q(c.ch)}${q(c.rim, "rim", barra)}
+  </tr>`;
+}
+
+function piede(l) {
+  const s = k => fmt(l.reduce((n, c) => n + (c[k] || 0), 0));
+  return `<tfoot><tr><td colspan="2">Totale · ${l.length} commesse</td><td>${fmt(l.reduce((n, c) => n + c.bolle.length, 0))} bolle</td><td colspan="2"></td>
+    <td class="r">${s("lanc")}</td><td class="r ap">${s("ap")}</td><td class="r">${s("ch")}</td><td class="r">${s("rim")}</td></tr></tfoot>`;
+}
+
+function disegna() {
+  chiudiPop();
+  const base = filtra(RIGHE, false);
+  for (const s of ["tutte", "lav", "attesa"])
+    $("n-" + s).textContent = base.filter(c => s === "tutte" || c.stato === s).length;
+  const l = ordina(filtra(RIGHE, true));
+  $("tab").innerHTML = testata(true) +
+    (l.length ? "<tbody>" + l.map(riga).join("") + "</tbody>" + piede(l)
+              : `<tbody><tr><td colspan="9" class="vuoto">Nessuna commessa corrisponde ai filtri.</td></tr></tbody>`);
+  $("conta").textContent = `${l.length} di ${RIGHE.length} commesse`;
+
+  const fc = ordina(filtra(FUORI, false));
+  $("box-fc").hidden = !FUORI.length;
+  $("fc-n").textContent = `· ${fc.length} commesse, ${fmt(fc.reduce((n, c) => n + c.ap, 0))} pz aperti`;
+  $("tab-fc").innerHTML = testata(false) + "<tbody>" +
+    (fc.length ? fc.map(riga).join("") : `<tr><td colspan="9" class="vuoto">Nessuna.</td></tr>`) + "</tbody>";
+
+  kpi();
+}
+
+const IC = {
+  macchina: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18h16M6 18V9a3 3 0 0 1 3-3h8a2 2 0 0 1 2 2v2h-6v8"/><path d="M13 10v3"/><circle cx="9" cy="10" r="1"/></svg>',
+  pezzi: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9z"/><path d="m12 12 8-4.5M12 12v9M12 12 4 7.5"/></svg>',
+  attesa: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+  rimaste: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16M7 16V9M12 16V5M17 16v-4"/></svg>',
+  pronte: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11v10H3zM14 10h4l3 3v4h-7"/><circle cx="7" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/></svg>',
+};
+function kpi() {
+  const lav = RIGHE.filter(c => c.stato === "lav"), att = RIGHE.filter(c => c.stato === "attesa");
+  const somma = (l, k) => l.reduce((n, c) => n + (c[k] || 0), 0);
+  const nb = lav.reduce((n, c) => n + c.bolle.length, 0);
+  const pronte = att.filter(c => c.monte_st === "fatto");
+  const lanc = somma(RIGHE, "lanc"), pct = lanc ? Math.round(somma(RIGHE, "ch") / lanc * 100) : 0;
+  const card = (cl, ic, l, v, d, extra = "") => `<div class="k ${cl}"><div class="ic">${IC[ic]}</div><div><div class="l">${l}</div><div class="v">${v}</div><div class="d">${d}</div>${extra}</div></div>`;
+  $("kpi").innerHTML =
+    card("", "macchina", "In lavorazione", fmt(lav.length), "commesse con bolle aperte a New Life") +
+    card("", "pezzi", "Pezzi aperti", fmt(somma(lav, "ap")), `su ${fmt(nb)} bolle aperte`) +
+    card("g", "attesa", "In attesa", fmt(att.length), `${fmt(somma(att, "rim"))} pz non ancora assegnati`) +
+    card("", "rimaste", "Rimaste", fmt(somma(RIGHE, "rim")), `pezzi da lavorare · ${pct}% già chiuso`,
+      `<div class="kbar" title="Pezzi chiusi sul totale lanciato"><i style="width:${pct}%"></i></div>`) +
+    card("m", "pronte", "Pronte a monte", fmt(pronte.length), "in attesa, senza lavorazioni a monte aperte");
+}
+
+/* ───────────────────────── Finestrelle ───────────────────────── */
+const POP = $("pop");
+let popEl = null, popFisso = false, popTimer = 0;
+const trova = com => D.commesse.find(c => c.c === com);
+
+function contenutoPop(tipo, c) {
+  if (tipo === "bolle") {
+    return `<div class="ph"><span>${esc(c.c)} · bollette aperte</span><small>${fmt(c.ap)} pz</small><button data-x aria-label="Chiudi">×</button></div>
+      <table><thead><tr><th>Bolla</th><th style="text-align:right">Pz</th><th>Fasi aperte</th><th>Aperta il</th></tr></thead><tbody>` +
+      c.bolle.map(b => `<tr><td class="nb">${esc(b.b)}</td><td class="num" style="text-align:right;font-weight:800">${fmt(b.q)}${b.tot > b.q ? `<div style="font-size:11px;color:var(--muted);font-weight:400">su ${fmt(b.tot)}</div>` : ""}</td>
+        <td>${b.fasi.map(f => { const [n, t] = fase(f); return `<span class="fase ${t}" style="display:inline-block;margin:1px 2px">${esc(n)}${f.q !== b.q ? " · " + fmt(f.q) : ""}</span>`; }).join("")}</td>
+        <td class="num">${dataIt(b.dal)}</td></tr>`).join("") + "</tbody></table>";
+  }
+  if (tipo === "monte") {
+    return `<div class="ph"><span>${esc(c.c)} · lavorazioni a monte</span><small>ancora aperte</small><button data-x aria-label="Chiudi">×</button></div>
+      <table><thead><tr><th>Lavorante</th><th>Fase</th><th style="text-align:right">Bolle</th><th style="text-align:right">Pz aperti</th></tr></thead><tbody>` +
+      c.monte.map(m => { const [n, t] = fase(m); return `<tr><td style="font-weight:800">${esc(m.e)}</td><td><span class="fase ${t}">${esc(n)}</span></td><td class="num" style="text-align:right">${m.nb}</td><td class="num" style="text-align:right;font-weight:800">${fmt(m.pz)}</td></tr>`; }).join("") +
+      "</tbody></table>" + `<div class="nota">Pezzi ancora in lavorazione presso altri prima dell'assemblaggio.</div>`;
+  }
+  return `<div class="ph"><span>${esc(c.c)} · fasi da fare</span><small>${c.bolle.length} bolle</small><button data-x aria-label="Chiudi">×</button></div>
+    <table><thead><tr><th>Fase</th><th style="text-align:right">Bolle</th><th style="text-align:right">Pz aperti</th></tr></thead><tbody>` +
+    c.fasi.map(f => { const [n, t] = fase(f); return `<tr><td><span class="fase ${t}">${esc(n)}</span> <span style="color:var(--muted);font-size:11px">fase ${f.n}</span></td><td class="num" style="text-align:right">${f.nb}</td><td class="num" style="text-align:right;font-weight:800">${fmt(f.pz)}</td></tr>`; }).join("") +
+    "</tbody></table>" + (c.fasi.some(f => f.pz !== c.ap) ? `<div class="nota">Una bolla può essere aperta in più fasi insieme: i pezzi della commessa sono ${fmt(c.ap)}, non la somma delle fasi.</div>` : "");
+}
+
+function apriPop(el, fisso) {
+  const tr = el.closest("tr"), c = trova(tr.dataset.c);
+  if (!c) return;
+  clearTimeout(popTimer);
+  popEl = el; popFisso = fisso;
+  document.querySelectorAll(".pill.on,.mt.on").forEach(p => p.classList.remove("on"));
+  if (el.matches(".pill,.mt")) el.classList.add("on");
+  POP.innerHTML = contenutoPop(el.dataset.pop, c);
+  POP.classList.add("on");
+  const r = el.getBoundingClientRect(), w = POP.offsetWidth, h = POP.offsetHeight;
+  let x = Math.min(r.left, innerWidth - w - 10), y = r.bottom + 6;
+  if (y + h > innerHeight - 10) y = Math.max(10, r.top - h - 6);
+  POP.style.left = Math.max(10, x) + "px"; POP.style.top = y + "px";
+}
+function chiudiPop() {
+  POP.classList.remove("on"); popEl = null; popFisso = false;
+  document.querySelectorAll(".pill.on,.mt.on").forEach(p => p.classList.remove("on"));
+}
+const hover = matchMedia("(hover: hover)").matches;
+document.addEventListener("mouseover", e => {
+  if (!hover || popFisso) return;
+  const el = e.target.closest("[data-pop]");
+  if (el) { if (el !== popEl) apriPop(el, false); else clearTimeout(popTimer); }
+  else if (popEl && !e.target.closest("#pop")) { clearTimeout(popTimer); popTimer = setTimeout(chiudiPop, 180); }
+  else if (e.target.closest("#pop")) clearTimeout(popTimer);
+});
+document.addEventListener("click", e => {
+  if (e.target.closest("[data-x]")) { chiudiPop(); return; }
+  const el = e.target.closest("[data-pop]");
+  if (el) { if (popFisso && el === popEl) chiudiPop(); else apriPop(el, true); return; }
+  if (!e.target.closest("#pop")) chiudiPop();
+  const th = e.target.closest("#tab th[data-ord]");
+  if (th) { const k = th.dataset.ord; V.dir = V.ord === k ? -V.dir : (["lanc", "ap", "ch", "rim", "bolle", "fasi"].includes(k) ? -1 : 1); V.ord = k; disegna(); }
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape") chiudiPop(); });
+document.querySelectorAll(".tw").forEach(t => t.addEventListener("scroll", () => { if (!popFisso) chiudiPop(); }, { passive: true }));
+
+/* ───────────────────────── Filtri ───────────────────────── */
+let tQ = 0;
+$("q").addEventListener("input", e => { clearTimeout(tQ); tQ = setTimeout(() => { V.q = e.target.value; disegna(); }, 120); });
+$("stato").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  V.stato = b.dataset.v;
+  document.querySelectorAll("#stato button").forEach(x => x.classList.toggle("on", x === b));
+  disegna();
+});
+$("monte").onchange = e => { V.monte = e.target.value; disegna(); };
+$("brand").onchange = e => { V.brand = e.target.value; disegna(); };
+
+/* ───────────────────────── Esporta Excel ───────────────────────── */
+let libXlsx = null;
+const caricaXlsx = () => libXlsx || (libXlsx = new Promise((ok, ko) => {
+  const s = document.createElement("script");
+  s.src = "https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js";
+  s.onload = () => ok(window.XLSX);
+  s.onerror = () => { libXlsx = null; ko(new Error("libreria non raggiungibile")); };
+  document.head.appendChild(s);
+}));
+/* data ISO → numero di serie Excel (giorno intero) */
+const dataXl = iso => iso ? Math.round(Date.UTC(+iso.slice(0, 4), +iso.slice(5, 7) - 1, +iso.slice(8, 10)) / 864e5) + 25569 : "";
+const COL_DATE = ["Scadenza", "Aperta il", "Scadenza commessa"];
+const STATI = { lav: "In lavorazione", attesa: "In attesa", fuori: "Non in Carico" };
+
+function foglio(X, righe, larghezze) {
+  const ws = X.utils.json_to_sheet(righe);
+  const intest = righe.length ? Object.keys(righe[0]) : [];
+  intest.forEach((h, j) => {
+    if (!COL_DATE.includes(h)) return;
+    for (let i = 1; i <= righe.length; i++) {
+      const cella = ws[X.utils.encode_cell({ r: i, c: j })];
+      if (cella && cella.t === "n") cella.z = "dd/mm/yyyy";
+    }
+  });
+  ws["!cols"] = larghezze.map(w => ({ wch: w }));
+  if (ws["!ref"]) ws["!autofilter"] = { ref: ws["!ref"] };
+  return ws;
+}
+
+function righeCommesse(l) {
+  return l.map(c => ({
+    "Commessa": c.c, "Brand": c.brand || "", "Modello": c.mod || "", "Parte": c.parte || "", "Descrizione": c.descr || "",
+    "Stato": STATI[c.stato] || c.stato, "Scadenza": dataXl(c.scad), "Giorni alla scadenza": gg(c.scad) ?? "",
+    "Bollette aperte": c.bolle.length, "Elenco bolle": c.bolle.map(b => b.b).join(", "),
+    "Fasi da fare": c.stato === "attesa" ? "In attesa di assegnazione" : c.fasi.map(f => fase(f)[0]).join(", "),
+    "Lavorazioni a monte": monteTesto(c),
+    "Assemblaggio (Carico)": c.stato === "fuori" ? "Non in Carico"
+      : c.dest.map(d => (d.sub || "Da assegnare") + (c.dest.length > 1 ? ` (${d.q} pz)` : "")).join(" / "),
+    "Lanciata": c.lanc || 0, "Aperte": c.ap || 0, "Chiuse": c.ch || 0, "Rimaste": c.rim || 0,
+  }));
+}
+
+function righeBolle(l) {
+  return l.flatMap(c => c.bolle.map(b => ({
+    "Commessa": c.c, "Brand": c.brand || "", "Modello": c.mod || "", "Descrizione": c.descr || "",
+    "Stato": STATI[c.stato] || c.stato, "Bolla": b.b, "Pz aperti": b.q, "Pz bolla": b.tot || b.q,
+    "Fasi aperte": b.fasi.map(f => fase(f)[0] + (f.q !== b.q ? ` (${f.q} pz)` : "")).join(", "),
+    "Aperta il": dataXl(b.dal), "Scadenza commessa": dataXl(c.scad),
+  })));
+}
+
+$("xls").onclick = async () => {
+  const btn = $("xls"), testo = btn.querySelector("span");
+  btn.disabled = true; testo.textContent = "Preparo…";
+  try {
+    const X = await caricaXlsx();
+    const l = ordina(filtra(RIGHE, true)), fc = ordina(filtra(FUORI, false));
+    const wb = X.utils.book_new();
+    const wc = [18, 10, 14, 8, 30, 14, 11, 10, 10, 30, 34, 44, 24, 10, 10, 10, 10];
+    X.utils.book_append_sheet(wb, foglio(X, righeCommesse(l), wc), "Commesse");
+    X.utils.book_append_sheet(wb, foglio(X, righeBolle([...l, ...fc]), [18, 10, 14, 30, 14, 10, 10, 10, 40, 11, 12]), "Bolle aperte");
+    if (fc.length) X.utils.book_append_sheet(wb, foglio(X, righeCommesse(fc), wc), "Non in Carico");
+    const d = new Date(), p = n => String(n).padStart(2, "0");
+    X.writeFile(wb, `Avanzamento New Life ${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}.xlsx`);
+  } catch (e) {
+    alert("Esportazione non riuscita: " + e.message + ". Controllate la connessione e riprovate.");
+  } finally {
+    btn.disabled = false; testo.textContent = "Esporta Excel";
+  }
+};
+
+if (!window.crypto || !crypto.subtle || typeof DecompressionStream === "undefined")
+  $("agg-b").textContent = "Questo browser è troppo vecchio: aprite la pagina con Chrome, Edge o Firefox aggiornati.";
+else avvio();
+</script>
+</body>
+</html>
