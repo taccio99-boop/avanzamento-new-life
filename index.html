@@ -496,7 +496,7 @@ $("f-acc").onsubmit = async ev => {
   if (!k || !PK) return;
   const btn = $("entra");
   btn.disabled = true; btn.textContent = "…"; $("err").textContent = "";
-  try { await entra(PK, k, $("ricorda").checked); mostraDash(); }
+  try { await entraAggiornando(k, $("ricorda").checked); mostraDash(); }
   catch (e) {
     $("err").innerHTML = e.message !== "chiave" ? "Errore nell'apertura dei dati."
       : `Chiave non valida.<br><span style="font-weight:600;color:var(--ink2)">Controllate di averla scritta giusta, `
@@ -511,6 +511,21 @@ async function entra(pk, k, ricorda) {
   if (ricorda) scriviMem(k);
   prepara();
   disegna();
+}
+
+/* Se la pagina è aperta da prima dell'ultimo aggiornamento, i dati in memoria possono
+   essere cifrati con una chiave vecchia: prima di dire "chiave non valida" si ricarica
+   dati.js e si riprova una volta con quelli nuovi. */
+async function entraAggiornando(k, ricorda) {
+  try { return await entra(PK, k, ricorda); }
+  catch (e) {
+    if (e.message !== "chiave") throw e;
+    const nuovo = await caricaPacchetto().catch(() => null);
+    if (!nuovo || nuovo.mac === PK.mac) throw e;
+    PK = nuovo;
+    $("agg-b").textContent = "Dati aggiornati il " + dtIt(PK.agg).replace(" ", " alle ");
+    return entra(PK, k, ricorda);
+  }
 }
 
 function mostraDash() {
