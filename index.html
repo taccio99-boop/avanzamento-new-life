@@ -219,8 +219,6 @@ td.r{text-align:right}
 .fase.a{background:rgba(255,255,255,.05);color:var(--txt2);border-color:rgba(255,255,255,.14)}
 .fase.g{background:transparent;color:var(--rosa);border:1px dashed rgba(255,46,77,.6)}
 .inatt{font-size:12px;font-weight:600;color:#ffcf7a;background:rgba(255,181,71,.07);border:1px dashed rgba(255,181,71,.5);padding:3px 10px;border-radius:7px;white-space:nowrap}
-.ass{font-size:11.5px;color:var(--muted);margin-top:5px;white-space:nowrap}
-.ass b{color:#fff;font-weight:600}
 .monte{display:flex;flex-direction:column;gap:4px;align-items:flex-start}
 .mt{display:inline-flex;align-items:center;gap:7px;font-weight:600;color:var(--txt);white-space:nowrap;font-size:13px;cursor:pointer;border-radius:6px;padding:1px 5px;margin-left:-5px;transition:background .15s}
 .mt:hover,.mt.on{background:rgba(255,46,77,.14)}
@@ -583,9 +581,6 @@ const fase = f => {
 };
 const brandTag = b => /saint|ysl/i.test(b || "") ? '<span class="brand ysl">YSL</span>' : /gucci/i.test(b || "") ? '<span class="brand gu">GUCCI</span>' : "";
 const artTxt = c => [c.mod, c.parte].filter(Boolean).join(" ") + (c.descr ? " · " + c.descr : "");
-const eNL = s => /^\s*n(ew)?\W*life\s*$/i.test(s || "");
-/* Assemblaggio dal Carico: chi assembla oltre (o al posto di) New Life */
-const altriAss = c => c.dest.filter(d => !eNL(d.sub));
 const MONTE_OK = "Completate", MONTE_NO = "Bolle non ancora emesse";
 /* Lavorazioni a monte raggruppate per lavorante: [{e, tipi, righe}] */
 function monteGruppi(c) {
@@ -638,7 +633,7 @@ function filtra(lista, conStato) {
     if (V.monte && !monteNomi(c).includes(V.monte)) return false;
     if (V.brand && c.brand !== V.brand) return false;
     if (q) {
-      const t = [c.c, c.mod, c.parte, c.descr, ...monteNomi(c), ...c.dest.map(d => d.sub), ...c.bolle.map(b => b.b)].join(" ").toLowerCase();
+      const t = [c.c, c.mod, c.parte, c.descr, ...monteNomi(c), ...c.bolle.map(b => b.b)].join(" ").toLowerCase();
       if (!t.includes(q)) return false;
     }
     return true;
@@ -673,16 +668,6 @@ function cellaMonte(c) {
     `<span class="mt" data-pop="monte">${esc(g.e)} <i>${esc(g.tipi.join(", "))}</i></span>`).join("")}</div>`;
 }
 
-function notaAss(c) {
-  if (c.stato === "fuori" || !c.dest.length) return "";
-  const altri = altriAss(c);
-  if (!altri.length) return "";
-  const nomi = altri.map(d => esc(d.sub || "da assegnare")).join(", ");
-  return altri.length === c.dest.length
-    ? `<div class="ass">Assembla <b>${nomi}</b></div>`
-    : `<div class="ass">Divisa con <b>${altri.map(d => `${esc(d.sub || "da assegnare")} (${fmt(d.q)} pz)`).join(", ")}</b></div>`;
-}
-
 function riga(c) {
   const g = gg(c.scad);
   const clS = g === null ? "" : g < 0 ? "pass" : g <= 7 ? "vic" : "";
@@ -699,7 +684,7 @@ function riga(c) {
   return `<tr class="${c.stato}" data-c="${esc(c.c)}">
     <td><div class="com">${esc(c.c)}${brandTag(c.brand)}</div><div class="art" title="${esc(artTxt(c))}">${esc(artTxt(c)) || "&nbsp;"}</div></td>
     <td class="scad ${clS}">${dataIt(c.scad)}${nota ? `<small>${nota}</small>` : ""}</td>
-    <td>${bolle}</td><td>${fasi}${notaAss(c)}</td><td>${cellaMonte(c)}</td>
+    <td>${bolle}</td><td>${fasi}</td><td>${cellaMonte(c)}</td>
     ${q(c.lanc)}${q(c.ap, "ap")}${q(c.ch)}${q(c.rim, "rim", barra)}
   </tr>`;
 }
@@ -863,8 +848,6 @@ function righeCommesse(l) {
     "Bollette aperte": c.bolle.length, "Elenco bolle": c.bolle.map(b => b.b).join(", "),
     "Fasi da fare": c.stato === "attesa" ? "In attesa di assegnazione" : c.fasi.map(f => fase(f)[0]).join(", "),
     "Lavorazioni a monte": monteTesto(c),
-    "Assemblaggio (Carico)": c.stato === "fuori" ? "Non in Carico"
-      : c.dest.map(d => (d.sub || "Da assegnare") + (c.dest.length > 1 ? ` (${d.q} pz)` : "")).join(" / "),
     "Lanciata": c.lanc || 0, "Aperte": c.ap || 0, "Chiuse": c.ch || 0, "Rimaste": c.rim || 0,
   }));
 }
@@ -885,7 +868,7 @@ $("xls").onclick = async () => {
     const X = await caricaXlsx();
     const l = ordina(filtra(RIGHE, true)), fc = ordina(filtra(FUORI, false));
     const wb = X.utils.book_new();
-    const wc = [18, 10, 14, 8, 30, 14, 11, 10, 10, 30, 34, 44, 24, 10, 10, 10, 10];
+    const wc = [18, 10, 14, 8, 30, 14, 11, 10, 10, 30, 34, 44, 10, 10, 10, 10];
     X.utils.book_append_sheet(wb, foglio(X, righeCommesse(l), wc), "Commesse");
     X.utils.book_append_sheet(wb, foglio(X, righeBolle([...l, ...fc]), [18, 10, 14, 30, 14, 10, 10, 10, 40, 11, 12]), "Bolle aperte");
     if (fc.length) X.utils.book_append_sheet(wb, foglio(X, righeCommesse(fc), wc), "Non in Carico");
